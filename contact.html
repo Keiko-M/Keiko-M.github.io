@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact us</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Style Sheet -->
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <!-- vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js" defer></script>
+    <script src="./js/app.js" defer></script>
+  </head>
+
+  <body>
+      <div id="app">
+        <div class="bg-1 p-10">
+          <div class=" container-fluid col-9 p-5 text-left">
+            <!-- Header -->
+            <div class="row align-items-start">
+
+              <h5 class="greenTextOverride">Keiko Morimoto</h5>
+              <h1 class="thick">Send me a message</h1>
+            </div>
+
+            <!-- Main Body -->
+            <div class="row align-items-start">
+
+              <!-- Left column -->
+              <div class="col-8 bg-light">
+                <form class="vue-form" @submit.prevent="submit" onsubmit="return ajaxpost()">
+                  <fieldset>
+                    <!-- Name row -->
+                    <div class="row align-items-start">
+                      <div class="col-6 form-group">
+                        <label class="label" for="firstName">First name<span style="color:red"> *</span></label>
+                        <input type="text" class="form-control"name="firstName" id="firstName" v-model="firstName">
+                      </div>
+                      <div class="col-6 form-group">
+                          <label class="label" for="lastName">Last name<span style="color:red"> *</span></label>
+                          <input type="text" class="form-control" name="lastName" id="lastName" v-model="lastName">
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <div>
+                        <label class="label" for="email">Email address<span style="color:red"> *</span> </label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder=" e.g. joe.bloggs@gmail.com" v-model="email.value">
+                      </div>
+
+                      <div>
+                        <label class="label" for="telephone">Telephone number <span style="color:red"> *</span></label>
+                        <input type="text" class="form-control" name="telephone" id="telephone" placeholder="+44" v-model="email.value">
+                      </div>
+
+                      <div>
+                        <label class="label" for="dob">Date of birth</label>
+                        <input type="date" class="form-control" name="dob" id="dob" placeholder="1999-01-01" v-model="dob">
+                      </div>
+
+                      <div class="error-message">
+                        <p v-show="checkAge"> You must be 18 years old or older to submit this form</p>
+                      </div>
+
+                      <div>
+                        <h5>Do you live in Colchester? <span style="color:red"> *</span></h5>
+                        <ul class="vue-form-list">
+                          <input type="radio" class="custom-control-input" name="colchester" id="yes" value="yes" v-model="colchester">
+                          <label for="yes">Yes</label>
+
+                          <input type="radio" class="custom-control-input" name="colchester" id="no" value="no" v-model="colchester">
+                          <label for="no">No</label>
+                        </ul>
+                      </div>
+
+                      <!-- Do you live in Colchester : Yes -->
+                      <div v-show="colchester=='yes'">
+                        <div>
+                          <h5>What is your home address?</h5>
+                          <label class="label" for="postcode">Postcode <span style="color:red"> *</span></label>
+                          <input v-if="!isHidden" type="text" class="form-control" name="postcode" id="postcode" value="CO3 3WG" v-model="postcode">
+                        </div>
+
+                        <div class="btn-green">
+                          <button v-if="!isHidden" type="button" class="btn btn-success" onclick="findAddress()" v-on:click="isHidden = true"> Find address</button>
+                        </div>
+
+                        <div class="row align-items-start">
+                          <div class="col-4 form-group">
+                            <p> {{ postcode }} </p>
+                          </div>
+
+                          <div v-show="postcode" class="col-8 form-group">
+                            <h6 class="text-primary" @click="resetpostcode"><ins>Change</ins></h6>
+                          </div>
+
+                          <label for="addresses">Choose your address</label>
+                          <select id="selectNumber" v-model="option">
+                            <option></option>
+                          </select>
+                        </div>
+
+
+                      </div>
+
+
+
+                      <!-- Do you live in Colchester : No -->
+                      <div v-show="colchester=='no'">
+                        <div>
+                          <label class="label" for="address1">Address line 1<span style="color:red"> *</span></label>
+                          <input type="text" class="form-control" name="address1" id="address1" value="" v-model="address1">
+                        </div>
+
+                        <div>
+                          <label class="label" for="address2">Address line 2<span style="color:red"> *</span></label>
+                          <input type="text" class="form-control" name="address2" id="address2" value="" v-model="address2">
+                        </div>
+
+                        <div class="row align-items-start">
+                          <div class="col-6 form-group">
+                            <label class="label" for="town">Town<span style="color:red"> *</span></label>
+                            <input type="text" class="form-control" name="town" id="town" value="" v-model="town">
+                          </div>
+
+                          <div class="col-6 form-group">
+                            <label class="label" for="postcode2">Postcode<span style="color:red"> *</span></label>
+                            <input type="text" class="form-control" name="postcode2" id="postcode2" value="" v-model="postcode2">
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Message Section -->
+                      <div>
+                        <label class="label" for="message">Your message<span style="color:red"> *</span></label>
+                        <textarea class="form-control" name="message" id="message" v-model="message.text"></textarea>
+                      </div>
+
+                      <div>
+                        <input type="button" class="btn btn-success" type="submit" v-on:click="isSubmitted = true" value="Send your message">
+                        <h2 v-if="isSubmitted"> We received your message. Thank you! </h2>
+
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>>
+              </div>
+
+              <!-- Right column -->
+              <div class="col-4 d-grid gap-lg-5">
+
+                <div class="bg-light p-lg-3">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2462.2831800568256!2d0.8907120159356849!3d51.892296090308385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d9045f46fac979%3A0x39e35a68636919d1!2sRowan%20House%2C%2033%20Sheepen%20Rd%2C%20Colchester%20CO3%203WG!5e0!3m2!1sen!2suk!4v1650789793828!5m2!1sen!2suk" width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  <div class="row align-items-center center element">
+                    <h6> Find me</h6>
+                    <h8>Rowan House, 33 Sheepen Road,
+                        Colchester, CO3 3WG</h8>
+                  </div>
+                </div>
+
+                <div class="bg-light elementTop">
+                  <h6> Follow me</h6>
+                  <!-- Add font awesome icons -->
+                  <a href="#" class="fa fa-facebook-square"></a>
+                  <a href="#" class="fa fa-twitter"></a>
+                  <a href="#" class="fa fa-linkedin-square"></a>
+                  <a href="#" class="fa fa-youtube-play"></a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        let form = document.getElementsByTagName("form")[0];
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          alert("Form Submitted!");
+        });
+
+        function getPostcode() {
+          return document.getElementById("postcode").value;
+        }
+
+        function findAddress(){
+          let lookup = getPostcode();
+          "use strict";
+          (async () => {
+          let url = 'https://interviewtask.azurewebsites.net/api/address?postcode=' + lookup ;
+          let response = await fetch(url);
+
+          let responseJason = await response.json(); // read response body and parse as JSON
+
+          let addresslist = []
+          for(let i = 0, l = responseJason.addresses.length; i < l; i++) {
+              addresslist.push(responseJason.addresses[i].Name)
+            };
+
+          <!-- populate dropdown list -->
+          document.getElementById("selectNumber").innerHTML = "";
+          let toAdd = document.getElementById("selectNumber");
+          let options = addresslist;
+
+          for(let i = 0; i < options.length; i++) {
+            let opt = options[i];
+            let el = document.createElement("option");
+            el.textContent = opt;
+            el.value = opt;
+            toAdd.appendChild(el);
+          }
+
+          })()
+        }
+
+
+        </script>
+  </body>
+
+</html>
