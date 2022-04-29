@@ -23,32 +23,9 @@ const app = new Vue({
       }
     },
     methods:{
-      // findAddress: function(event){
-      //   fetch("https://interviewtask.azurewebsites.net/api/address?postcode=co1%201jx")
-      //   .then(response => response.json());
-
-      //   alert("Hello");
-      // },
-        // let url = 'https://interviewtask.azurewebsites.net/api/address?postcode=co1%201jx';
-        // let response = await fetch(url);
-
-        // let responseJason = await response.json(); // read response body and parse as JSON
-
-        // let noOfresponse = responseJason.addresses.length;
-        // addresses = responseJason
-
-        // // for(let i = 0, l = noOfresponse; i < l; i++) {
-        // //   addresses.push(responseJason.addresses[i].Name);
-        // // }
-        // fetch("https://interviewtask.azurewebsites.net/api/address?postcode=co1%201jx")
-        //   .then(response => response.json())
-
-        // alert(responseJason.addresses[i].Name);
-        // alert(responseJason.addresses[1].Name);
-
       resetpostcode: function() {
         this.postcode = '';
-      }
+        this.isHidden = false}
     },
 });
 
