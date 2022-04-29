@@ -6,7 +6,7 @@ Developed using html, CSS, bootstrap, javascript, and Vue.js<br/>
 
 
 
-I completed the technical assessment and the files are deployed at \
+The project is deployed at \
 https://keiko-m.github.io/aboutme.html<br/>
 https://keiko-m.github.io/contact.html 
 
